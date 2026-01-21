@@ -128,13 +128,13 @@ class HybridPdfLoader:
         print(f"Extracting text from {pdf_path}...")
         text = self.extract_text_pymupdf(pdf_path)
         if len(text) >= MIN_TEXT_THRESHOLD:
-            print(f"    ✓ PyMuPDF extracted {len(text)} characters")
+            print(f"     PyMuPDF extracted {len(text)} characters")
             return text
         else:
             print(f"    ⚠ PyMuPDF text too short ({len(text)} chars). Attempting OCR...")
             ocr_text = self.extract_text_ocr(pdf_path)
             if len(ocr_text) > len(text):
-                print(f"    ✓ OCR extracted {len(ocr_text)} characters")
+                print(f"     OCR extracted {len(ocr_text)} characters")
                 return ocr_text
             return text
 
@@ -209,9 +209,9 @@ class HybridPdfLoader:
                     ids=batch_ids,
                     metadatas=batch_meta
                 )
-                print(f"    ✓ Added batch {i//batch_size + 1}")
+                print(f"     Added batch {i//batch_size + 1}")
             except Exception as e:
-                print(f"    ✗ Batch failed: {e}")
+                print(f"     Batch failed: {e}")
 
     # --- THIS METHOD IS NOW CORRECTLY INDENTED INSIDE THE CLASS ---
     def process_all_pdfs(self, pdf_files: List[str]):
@@ -232,10 +232,10 @@ class HybridPdfLoader:
                     self.add_pdf_to_chromadb(pdf_file)
                     successful += 1
                 except Exception as e:
-                    print(f"    ✗ FAILED processing {pdf_file}: {e}")
+                    print(f"     FAILED processing {pdf_file}: {e}")
                     failed += 1
             else:
-                print(f"    ✗ File not found: {pdf_file}")
+                print(f"     File not found: {pdf_file}")
                 failed += 1
                 
         total_docs = self.collection.count()
@@ -251,4 +251,5 @@ class HybridPdfLoader:
 
 if __name__ == "__main__":
     loader = HybridPdfLoader()
+
     loader.process_all_pdfs(CYBERSECURITY_PDF_FILES)
